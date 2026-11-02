@@ -7,8 +7,6 @@
         "types": [],
         "strict": true,
         "noImplicitAny": true,
-        "allowJs": true,
-        "checkJs": false,
         "outDir": "./dist"
     },
     "include": ["src/**/*"],
