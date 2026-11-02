@@ -1,8 +1,10 @@
 import './sources.css';
 import type { NewsSource } from '../../../types/api';
 
+type SourceItem = Readonly<Pick<NewsSource, 'id' | 'name'>>;
+
 class Sources {
-    public draw(data: NewsSource[]): void {
+    public draw(data: readonly SourceItem[]): void {
         const fragment = document.createDocumentFragment();
         const sourceItemTemp = document.querySelector('#sourceItemTemp');
         const sourcesContainer = document.querySelector('.sources');
