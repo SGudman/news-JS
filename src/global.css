@@ -1,35 +1,119 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    color: #fff;
-    background: #17181c;
-    font-family: sans-serif;
+    margin: 0;
+    color: #302a24;
+    background: #f4efe5;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+header,
+main,
+footer {
+    width: min(100% - 40px, 1120px);
+    margin: 0 auto;
 }
 
 header {
-    padding: 10px 30px;
+    padding: 26px 0 16px;
+    border-bottom: 3px double #302a24;
 }
 
 header h1 {
-    font-size: 40px;
-    font-weight: 800;
+    margin: 0;
+    font-family: Georgia, serif;
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+main {
+    display: grid;
+    grid-template-columns: minmax(190px, 230px) minmax(0, 1fr);
+    align-items: start;
+    gap: 32px;
+    padding-top: 24px;
+}
+
+main .news {
+    min-width: 0;
 }
 
 footer {
-    height: 100px;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
-    justify-content: center;
+    column-gap: 12px;
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 1px solid #c9beac;
+    color: #655b4f;
+    font-size: 13px;
 }
-footer .copyright {
-    font-size: 14px;
-    color: #333;
-    text-align: center;
+
+.site-footer__left {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-self: start;
+    gap: 12px;
 }
-footer .copyright a {
-    color: #444;
+
+.site-footer__logo {
+    justify-self: center;
+    line-height: 0;
 }
-footer .copyright a:hover {
-    color: #555;
+
+.site-footer__newsapi {
+    justify-self: end;
 }
-footer .copyright:before {
-    content: '©';
+
+footer a {
+    color: #302a24;
+    text-underline-offset: 4px;
+}
+
+footer img {
+    display: block;
+    width: 48px;
+    height: auto;
+    filter: grayscale(1);
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid #805638;
+    outline-offset: 3px;
+}
+
+@media (max-width: 959px) {
+    main {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+        padding-top: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    header,
+    main,
+    footer {
+        width: calc(100% - 24px);
+    }
+
+    header {
+        padding-top: 20px;
+    }
+
+    footer {
+        column-gap: 8px;
+    }
+
+    .site-footer__left {
+        gap: 8px;
+    }
 }
