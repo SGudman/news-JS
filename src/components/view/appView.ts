@@ -11,9 +11,8 @@ export class AppView {
         this.sources = new Sources();
     }
 
-    public drawNews(data?: Partial<Pick<NewsResponse, 'articles'>> | null): void {
-        const values = data?.articles ? data?.articles : [];
-        this.news.draw(values);
+    public drawNews(data: NewsResponse): void {
+        this.news.draw(data.articles);
     }
 
     public drawSources(data?: Partial<Pick<SourcesResponse, 'sources'>> | null): void {

@@ -5,15 +5,18 @@ type SourceItem = Readonly<Pick<NewsSource, 'id' | 'name'>>;
 
 class Sources {
     public draw(data: readonly SourceItem[]): void {
-        const fragment = document.createDocumentFragment();
         const sourceItemTemp = document.querySelector('#sourceItemTemp');
         const sourcesContainer = document.querySelector('.sources');
 
-        if (!(sourceItemTemp instanceof HTMLTemplateElement) || !sourcesContainer) {
+        if (!(sourceItemTemp instanceof HTMLTemplateElement) || !(sourcesContainer instanceof HTMLElement)) {
             throw new Error('Sources template or container is missing');
         }
 
-        data.forEach((item) => {
+        const fragment = document.createDocumentFragment();
+
+        const sortedData = [...data].sort((first, second) => first.name.localeCompare(second.name));
+
+        sortedData.forEach((item) => {
             const sourceClone = sourceItemTemp.content.cloneNode(true);
 
             if (!(sourceClone instanceof DocumentFragment)) {
@@ -29,11 +32,10 @@ class Sources {
 
             sourceName.textContent = item.name;
             sourceItem.setAttribute('data-source-id', item.id);
-
             fragment.append(sourceClone);
         });
 
-        sourcesContainer.append(fragment);
+        sourcesContainer.replaceChildren(fragment);
     }
 }
 

@@ -2,15 +2,28 @@ import './news.css';
 import type { NewsArticle } from '../../../types/api';
 
 class News {
-    public draw(data: NewsArticle[]): void {
-        const news = data.length >= 10 ? data.filter((_item, idx) => idx < 10) : data;
-
-        const fragment = document.createDocumentFragment();
-        const newsItemTemp = document.querySelector('#newsItemTemp');
+    public draw(data: readonly NewsArticle[]): void {
         const newsContainer = document.querySelector('.news');
 
-        if (!(newsItemTemp instanceof HTMLTemplateElement) || !newsContainer) {
-            throw new Error('News template or container is missing');
+        if (!(newsContainer instanceof HTMLElement)) {
+            throw new Error('News container is missing');
+        }
+
+        if (data.length === 0) {
+            const emptyMessage = document.createElement('p');
+            emptyMessage.className = 'news__empty';
+            emptyMessage.setAttribute('role', 'status');
+            emptyMessage.textContent = 'No news from this source yet.';
+            newsContainer.replaceChildren(emptyMessage);
+            return;
+        }
+
+        const news = data.length >= 10 ? data.filter((_item, idx) => idx < 10) : data;
+        const fragment = document.createDocumentFragment();
+        const newsItemTemp = document.querySelector('#newsItemTemp');
+
+        if (!(newsItemTemp instanceof HTMLTemplateElement)) {
+            throw new Error('News template is missing');
         }
 
         news.forEach((item, idx) => {
@@ -56,8 +69,7 @@ class News {
             fragment.append(newsClone);
         });
 
-        newsContainer.innerHTML = '';
-        newsContainer.appendChild(fragment);
+        newsContainer.replaceChildren(fragment);
     }
 }
 

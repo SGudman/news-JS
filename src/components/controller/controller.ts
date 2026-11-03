@@ -17,37 +17,48 @@ class AppController extends AppLoader {
     }
 
     public getNews(e: MouseEvent, callback: (data: NewsResponse) => void): void {
-        const newsContainer = e.currentTarget;
+        const sourcesContainer = e.currentTarget;
         const target = e.target;
 
-        if (!(newsContainer instanceof Element) || !(target instanceof Element)) {
+        if (!(sourcesContainer instanceof Element) || !(target instanceof Element)) {
             return;
         }
 
         let sourceElement: Element | null = target;
 
-        while (sourceElement && sourceElement !== newsContainer) {
+        while (sourceElement && sourceElement !== sourcesContainer) {
             if (sourceElement.classList.contains('source__item')) {
                 const sourceId = sourceElement.getAttribute('data-source-id');
-                if (!sourceId) {
-                    return;
-                }
-                if (newsContainer.getAttribute('data-source') !== sourceId) {
-                    newsContainer.setAttribute('data-source', sourceId);
-                    super.getResp<NewsResponse>(
-                        {
-                            endpoint: Endpoint.Everything,
-                            options: {
-                                sources: sourceId,
-                            },
-                        },
-                        callback
-                    );
+                if (sourceId) {
+                    this.getNewsForSource(sourceId, sourcesContainer, callback);
                 }
                 return;
             }
             sourceElement = sourceElement.parentElement;
         }
+    }
+
+    public getNewsForSource(sourceId: string, sourcesContainer: Element, callback: (data: NewsResponse) => void): void {
+        const sourceElement = Array.from(sourcesContainer.querySelectorAll('.source__item')).find(
+            (item) => item.getAttribute('data-source-id') === sourceId
+        );
+
+        if (!sourceElement || sourcesContainer.getAttribute('data-source') === sourceId) {
+            return;
+        }
+
+        sourcesContainer.setAttribute('data-source', sourceId);
+        sourcesContainer.querySelector('[aria-pressed="true"]')?.setAttribute('aria-pressed', 'false');
+        sourceElement.setAttribute('aria-pressed', 'true');
+        super.getResp<NewsResponse>(
+            {
+                endpoint: Endpoint.Everything,
+                options: {
+                    sources: sourceId,
+                },
+            },
+            callback
+        );
     }
 }
 
